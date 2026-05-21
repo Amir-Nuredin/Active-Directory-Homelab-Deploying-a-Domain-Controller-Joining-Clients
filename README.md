@@ -1,4 +1,4 @@
-# Active Directory Homelab Deploying a Domain Controller Joining Clients
+# Active Directory Homelab: Deploying a Domain Controller and Joining Clients
 
 ## Objective
 
