@@ -143,6 +143,83 @@ IM18: Creating New OUs in AD
 
 IM19: New OUs under Corp.Local Domain
 
+### Part 9: Creating Domain Users and Groups and Joining Users to Designated Groups
+
+Now I wanted to create some Users and Groups inside the Corp.Local Domain to practice administering new users and groups. 
+
+1. **CREATING USERS.** First, I created some Users. I put them in the "Users-OU" OU. To do this, I expanded Corp.Local, right-clicked on the Users-OU OU, and clicked New, then User (IM20). A new tab pops up asking me for some information about the user. I put the first name, last name, and username (Amir, User, Amir.User) and then made a password for the user. I repeated the same steps to create an admin user (Amir, Admin, Amir.Admin). After that, I went into the OU for users and saw those two users in there, confirming that they were successfully created (IM21).
+2. **CREATING GROUPS.** To create the groups in Corp.Local, I went to the ITAdmins OU and right-clicked, then selected New and then Group (IM22). Again, a pop-up appears asking me to fill in the info for the group. I made two groups for this example: ITAdmins and Employees. It asked me to fill in the group name and options for Group Scope and Group type. I chose Global and Security for those options for both groups (IM23).
+3. **ADDING USERS TO SPECIFIC GROUPS.** I now wanted to add the users into different groups to simulate Role-Based Access Control as a real company would. For example, if I wanted to add the "Amir.Admin" user to the ITAdmins group, I would double-click the ITAdmins group, go to the members section, select add, and enter the name of the user (Amir.Admin) (IM24). I did the same proccess to add the "Amir.User" user to the Employees group. After this was complete, I checked to see if they were added by double clicking the group and going to the Members section, and they were both there (IM25&26).
+
+<img width="685" height="424" alt="image" src="https://github.com/user-attachments/assets/55bb553c-8a6c-434f-93be-27b36011ea52" />
+
+IM20: Creating a New User in "Users-OU" OU
+
+<img width="479" height="339" alt="image" src="https://github.com/user-attachments/assets/dd53dd1a-f04a-4bbf-96e6-e307fe526344" />
+
+IM21: New Users Created in "Users-OU" OU
+
+<img width="533" height="500" alt="image" src="https://github.com/user-attachments/assets/3c620313-216d-4955-ae0a-bb82006ed290" />
+
+IM22: Creating a New Group in "ITAdmins" OU
+
+<img width="547" height="482" alt="Screenshot 2026-05-20 165024" src="https://github.com/user-attachments/assets/12f82705-70ba-4dec-9e3b-d37265e622f1" />
+
+IM23: Employee Example Group Being Created
+
+<img width="754" height="329" alt="Screenshot 2026-05-20 165117" src="https://github.com/user-attachments/assets/cf207e98-2433-4513-91eb-07ff2c9a9419" />
+
+IM24: Adding User to a New group
+
+<img width="615" height="450" alt="Screenshot 2026-05-20 165243" src="https://github.com/user-attachments/assets/edf617d7-c5d9-4f0f-ac54-18fdd874bbc4" />
+<img width="615" height="450" alt="Screenshot 2026-05-20 165256" src="https://github.com/user-attachments/assets/37ead593-72b1-4a06-8514-036ee206f031" />
+
+IM25&26: Users Added to ITAdmins and Employees Groups
+
+### Part 10: Joining Windows 10 VM to Domain
+
+This is the biggest step of the Project. Now my other Windows VM would be apart of the domain.
+
+1. **CONFIGURING DNS ON WINDOWS 10.** Before I could join the VM to the domain, I had to change its DNS settings. This is because if the Windows 10 VM wasn't using the same DNS server as the DC, (Windows Server VM) the domain join would fail as it wouldn't what domain to point to. To do this, I went to the adapter settings in ethernet and edited the IPV4 properties. I changed the DNS server to the IP address of the Windows Server VM (also now the DC and DNS server) (IM27).
+2. **JOINING DOMAIN.** Now I was ready to join the domain. To to this, I went into the Windows 10 VM settings, then went to system, then about. I scrolled down to "Rename this PC (Advanced)." After clicking that, it took me to system properties where I clicked the "change" option. There was two options to change, either "Domain" or "Workgroup." I was only concerned with the Domain option, so I clicked that and typed in the name of the domain, "Corp.Local. (IM28)" After that it asked me to type in the admin log-in information for authentication. I typed it in, and it gave me a success message. To make sure these configurations persisted, I had to reboot the VM. Once that was complete. I now had the option as the log-in page to log in with another user. For this example I chose Amir.User and log in with those credentials, and it worked (IM29), confirming that the Windows 10 VM was now a part of the domain.
+
+<img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/e12f5f49-d98f-45b9-afe8-97f66e302956" />
+
+IM27: Changing DNS Configuration of the Windows 10 VM
+
+<img width="500" height="450" alt="image" src="https://github.com/user-attachments/assets/89c53981-e8e9-4b75-ac57-a961bc2a3505" />
+
+IM28: Adding Windows 10 VM into Corp.Local Domain
+
+<img width="750" height="450" alt="Screenshot 2026-05-20 181617" src="https://github.com/user-attachments/assets/3c073747-eb83-489e-8751-34638088924a" />
+
+IM29: Logging in as Newly Created User in Corp.Local Domain
+
+### Part 11: Final Verification
+
+The last step of this Project was to verify that everything was working and that AD was working correctly. First, I was still logged in as Amir.User, so I wanted to see if that user was in the correct domain, so I ran a few commands. I ran "whoami" and it outputed "corp\amir.user," so that was good. I then ran "nslookup corp.local." and it returned the correct IP address. Lastly, I pinged the DC and it returned successfull, confirming that everything for this project was up and running (IM30). I also checked in AD if the computer was joined to the domain by expanding Corp.Local and clicking on the Computers OU, and it was there as well (IM31).
+
+<img width="451" height="369" alt="Screenshot 2026-05-20 182144" src="https://github.com/user-attachments/assets/594d4659-a518-46d1-a8fa-ac54a61e83b8" />
+
+IM30: Running Commands to confirm Successfull Domain Join
+
+<img width="470" height="339" alt="image" src="https://github.com/user-attachments/assets/21df3b1c-e9a0-4501-9853-ed779c52aa36" />
+
+IM31: Confirming Windows 10 Machine is joined to Domain
+
+## Conclusion
+
+This lab was successful in demonstrating the deployment and configuration of a Active Directory environment using Windows Server 2022, with a focus on domain services, DNS configuration, and client integration. Through this project, key enterprise concepts were implemented in a practical setting, including promoting a server to a Domain Controller, configuring DNS to support domain operations, and establishing centralized identity and access management through users, groups, and Organizational Units.
+
+In addition, several challenges were encountered during the implementation process. These included properly configuring network settings such as static IP addressing and DNS to ensure reliable domain communication and understanding the dependency of Active Directory on DNS for authentication and service discovery. Resolving these challenges reinforced the importance of proper network planning and validation when deploying domain-based environments.
+
+Overall, the project strengthened the connection between theoretical concepts in networking and cybersecurity and their real-world application in enterprise system administration. It emphasized core principles such as centralized authentication, structured resource organization, and the critical role of DNS in supporting Active Directory functionality.
+
+Some potential areas for further improvement in this lab include implementing Group Policy Objects (GPOs) to enforce security configurations, expanding the environment with additional domain-joined clients, introducing role-based access control through more advanced group management, and integrating security monitoring or logging solutions to enhance visibility into domain activity.
+
+
+
+
 
 
 
